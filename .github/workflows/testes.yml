@@ -1,0 +1,34 @@
+name: testes
+
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  e2e:
+    name: ${{ matrix.os }} / Python ${{ matrix.python }}
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, macos-latest, windows-latest]
+        python: ["3.10", "3.13"]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python }}
+      - name: Instalar ffmpeg (Linux)
+        if: runner.os == 'Linux'
+        run: sudo apt-get update && sudo apt-get install -y ffmpeg
+      - name: Instalar ffmpeg (macOS)
+        if: runner.os == 'macOS'
+        run: brew install ffmpeg
+      - name: Instalar ffmpeg (Windows)
+        if: runner.os == 'Windows'
+        run: choco install ffmpeg -y --no-progress
+      - name: cbk.py doctor
+        run: python cbk.py doctor -c config.example.json
+      - name: Teste ponta a ponta
+        run: python tests/e2e.py

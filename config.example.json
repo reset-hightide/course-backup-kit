@@ -1,0 +1,18 @@
+{
+  "name": "FP&A na Prática",
+  "adapter": "hubla",
+  "origin": "https://app.hub.la",
+  "dest": "~/Cursos/FP&A na Prática",
+  "port": 8765,
+  "video_workers": 2,
+  "segment_threads": 12,
+  "stall_minutes": 45,
+  "client": {
+    "lessonFolder": "{n} {title}",
+    "videoName": "video.mp4"
+  },
+  "notify": [
+    {"type": "stdout"},
+    {"type": "desktop"}
+  ]
+}
